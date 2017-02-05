@@ -8,7 +8,6 @@ $(EXEC): $(OBJECTS)
 	$(CC) $(OBJECTS) -o $(EXEC)
 
 all: 
-	cd src && $(MAKE)
 	$(CC) -c $(CC_FLAGS) $< -o $@
 rshell:
 
