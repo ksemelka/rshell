@@ -10,5 +10,5 @@ And::~And() {
 }
 
 bool And::execute() {
-	
+	return true;
 }

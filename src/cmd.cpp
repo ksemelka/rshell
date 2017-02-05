@@ -10,5 +10,5 @@ Cmd::~Cmd() {
 }
 
 bool Cmd::execute() {
-
+	return true;
 }

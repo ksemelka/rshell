@@ -10,5 +10,5 @@ Or::~Or() {
 }
 
 bool Or::execute() {
-	
+	return true;
 }

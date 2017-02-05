@@ -2,7 +2,7 @@
 
 class Base {
 public:
-	Base();
-	~Base();
+	Base() { } ;
+	~Base() { } ;
 	virtual bool execute() = 0;
 };

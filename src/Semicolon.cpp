@@ -10,5 +10,5 @@ Semicolon::~Semicolon() {
 }
 
 bool Semicolon::execute() {
-
+	return true;
 }
