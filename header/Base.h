@@ -1,4 +1,5 @@
 #pragma once
+#include <cstdlib> //NULL
 
 class Base {
 public:

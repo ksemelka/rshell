@@ -3,7 +3,8 @@
 
 class Connector : public Base {
 public:
-	Connector();
+	Connector() : left(NULL), right(NULL) { }
+	Connector(Base*, Base*);
 	~Connector();
 	virtual bool execute() = 0;
 private:
