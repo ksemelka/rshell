@@ -18,22 +18,19 @@ Cmd::~Cmd() {
 bool Cmd::execute() {
   unsigned size = (argumentList.size() + 1);
   char* args[100]; //
-  char* file = (char*)executable.c_str();
   
-  for(unsigned i = 0; i < size; i++){
+  args[0] = (char*)executable.c_str();
+  
+  for(unsigned i = 1; i < size+1; i++){
     args[i] = (char*)(argumentList.at(i)).c_str();
   }
   
-  if(size == 0){
-    args[0] = NULL;
-  }else{
-    args[size] = NULL;
-  }
+  args[size+1] = NULL;
   
   pid_t pid = fork();
   
   if(pid == 0){	//Child node
-    if(execvp(file,args) == -1){
+    if(execvp(args[0],args) == -1){
       return false;
     }
   }
