@@ -3,10 +3,10 @@
 
 class Connector : public Base {
 public:
-	Connector() : left(NULL), right(NULL) { }
+	Connector();
 	Connector(Base*, Base*);
 	~Connector();
 	virtual bool execute() = 0;
-private:
+protected:
 	Base *left, *right;
 };
