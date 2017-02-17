@@ -9,11 +9,12 @@
 void parse(const std::string&, std::vector<Base*>&);
 void Tokenize(const std::string&, std::vector<std::string>&, const std::string&);
 void Tokenize2(const std::string&, std::vector<std::string>&);
+void Tokenize3(const std::string&, std::vector<std::string>&);
 std::string trim(const std::string&);	//Strips leading and trailing whitespace
 
 int main() {
 	while(1) {
-		std::vector<Base*> parsedTokens;
+		Base* root;
 		std::string input;
 
 		std::cout << "$ ";
@@ -21,21 +22,22 @@ int main() {
 		input = trim(input);
 
 		try{
-			parse(input, parsedTokens);
+			root = parse(input);
 		} catch (std::exception& e) {
 			std::cout << e.what() << std::endl;
 		}
 	}
 }
 
-void parse(const std::string& str, std::vector<Base*>& parsedTokens) {
-	std::vector<Base*> v;
+void parse(const std::string& str) {
+	Base* root;
 	std::vector<std::string> tokens;
 	std::string delimiters1 = ";";
 	std::string delimiters2 = "&&";
 	std::string delimiters3 = "||";
 
 	Tokenize2(str, tokens);
+	createTree(tokens);
 
 
 	// Tokenize(str, tokens, delimiters1);
