@@ -1,6 +1,6 @@
 SUBDIRS = src
 rshell: all
-	mkdir bin/
+	-mkdir bin/
 	for dir in $(SUBDIRS); do \
 		cd $$dir; \
 		mv rshell.exe ../bin; \
