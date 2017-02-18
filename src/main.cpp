@@ -1,14 +1,13 @@
 #include <iostream>	//std::cout, std::endl, std::cin, std::getline
 #include <cstring>	//std::strtok, std::strstr
-// #include <string>
 #include <vector>		//std::vector
 #include <list>
 #include <algorithm>	//std::find_first_not_of, std::find_first_of, std::find_last_not_of
 #include <stdexcept>
-#include "../header/Base.h"
 #include "../header/Cmd.h"
-#include "../header/Connector.h"
 #include "../header/Semicolon.h"
+#include "../header/And.h"
+#include "../header/Or.h"
 
 Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&, const std::string&);
@@ -114,15 +113,20 @@ void Tokenize2(const std::string& str,
 		a = trim(a);
 		for (size_t i = 0; i < a.size(); ++i) {
 			if (a.at(i) == '&') {
-				if (i )
 				if (i + 1 < a.size() && a.at(i + 1) != '&') {
 					throw std::runtime_error("Tokenize2: Error, invalid syntax2");
 				}
-				// if (a.find_first_not_of("&"));
+				++i;
+			}
+			if (a.at(i) == '|') {
+				if (i + 1 < a.size() && a.at(i + 1) != '|') {
+					throw std::runtime_error("Tokenize2: Error, invalid syntax3");
+				}
+				++i;
 			}
 		}
 		if (a.find('&') == 0 || a.find('|') == 0) {
-			throw std::runtime_error("Tokenize2: Error, invalid syntax2");
+			throw std::runtime_error("Tokenize2: Error, invalid syntax4");
 		}
 		// if (a.find('&') != std::string::npos) {
 		// 	if (a.at(a.find('&')))
@@ -163,37 +167,95 @@ Base* createTree(const std::vector<std::string>& tokens) {
 	}
 }
 
+// Base* _createTree(std::string s) {
+// 	Base* tempNode = NULL;
+// 	s = trim(s);
+// 	size_t found = s.find_last_of("&|");
+		
+// 	if (found == std::string::npos) {	// No connectors
+// 		tempNode = new Cmd(s);
+// 		return tempNode;
+// 	}
+
+// 	// while (found != std::string::npos) {	// Create tree until no more connectors found
+// 		size_t beginIndex;
+// 		// size_t nextConnectorPos = s.find_last_of("&|", found - 2);	// find pos of the next connector to the left
+		
+// 		if (found == std::string::npos) {		// If there are no more connectors, set beginIndex to 0
+// 			beginIndex = 0;
+// 			if (s.at(found) == '&') {
+// 				newNode = And(_createTree(s.substr(0, found - 1)), new Cmd(s.substr(beginIndex, found - 1)));
+// 			}
+// 			else if (s.at(found) == '|') {
+// 				newNode = Or(_createTree(s.substr(0, found - 1)), new Cmd(s.substr(beginIndex, found - 1)));
+// 			}
+// 			else {
+// 				throw std::logic_error("_createTree: Error, found character other than connector");
+// 			}
+// 		}
+// 		else {														// Else, set beginIndex to index right after next found connector;
+// 			beginIndex = nextConnectorPos + 1;
+// 			if (s.at(found) == '&') {
+// 				newNode = And(new Cmd(s.substr(beginIndex, found - 1)), _createTree(s.substr(beginIndex, )));
+// 			}
+// 			else if (s.at(found) == '|') {
+// 				newNode = Or(_createTree(s.substr(0, found - 1)), new Cmd(s.substr(beginIndex, found - 1)));
+// 			}
+// 			else {
+// 				throw std::logic_error("_createTree: Error, found character other than connector");
+// 			}
+// 		}
+		
+		
+// 		tempNode = _createTree();
+		
+// 		found = nextConnectorPos;			// Update found for next iteration
+// 	// }
+// 	return tempNode;
+// }
+
+// Base* _createTree(std::string s) {
+// 	Base* newNode = NULL;
+// 	s = trim(s);
+// 	size_t found = s.find_first_of("&|");
+		
+// 	if (found == std::string::npos) {	// No connectors
+// 		newNode = new Cmd(s);
+// 		return newNode;
+// 	}
+
+// 	if (s.at(found) == '&') {
+// 	   newNode = new And(new Cmd(s.substr(0, found - 1)), _createTree(s.substr(found + 2, s.size() - 1)));
+// 	}
+// 	else if (s.at(found) == '|') {
+// 		newNode = new Or(new Cmd(s.substr(0, found - 1)), _createTree(s.substr(found + 2, s.size() - 1)));
+// 	}
+// 	else {
+// 		throw std::logic_error("_createTree: Error, found character other than connector");
+// 	}
+	
+// 	return newNode;
+// }
+
 Base* _createTree(std::string s) {
-	Base* tempNode = NULL;
+	Base* newNode = NULL;
 	s = trim(s);
 	size_t found = s.find_last_of("&|");
 		
 	if (found == std::string::npos) {	// No connectors
-		tempNode = new Cmd(s);
-		return tempNode;
+		newNode = new Cmd(s);
+		return newNode;
+	}
+
+	if (s.at(found) == '&') {
+	   newNode = new And(_createTree(s.substr(0, found - 2)), new Cmd(s.substr(found + 1, s.size() - 1)));
+	}
+	else if (s.at(found) == '|') {
+		newNode = new Or(_createTree(s.substr(0, found - 2)), new Cmd(s.substr(found + 1, s.size() - 1)));
+	}
+	else {
+		throw std::logic_error("_createTree: Error, found character other than connector");
 	}
 	
-	// Base* newNode = NULL;
-	// while (found != std::string::npos) {	// Create tree until no more connectors found
-	// 	size_t beginIndex;
-	// 	size_t nextConnectorPos = s.find_last_of("&|", found - 2);	// find pos of the next connector
-		
-	// 	if (nextConnectorPos == std::string::npos) {		// If there are no more connectors, set beginIndex to 0
-	// 		beginIndex = 0;
-	// 	}
-	// 	else {														// Else, set beginIndex to index right after next found connector;
-	// 		beginIndex = nextConnectorPos + 1;
-	// 	}
-		
-	// 	if (s.at(found) == '&') {
-	// 		newNode = And(left, right);
-	// 	}
-	// 	else if (s.at(found) == '|') {
-	// 		newNode = Or(left, right);
-	// 	}
-	// 	newNode = _createTree(s.substr());
-		
-	// 	found = nextConnectorPos;			// Update found for next iteration
-	// }
-	return tempNode;
+	return newNode;
 }
