@@ -86,23 +86,23 @@ void Tokenize(const std::string& str,
 			tokens.push_back(str.substr(startPos, i - startPos + 1));
 		}
 	}
-	for (auto& a : tokens) {
-		a = trim(a);
-		for (size_t i = 0; i < a.size(); ++i) {
-			if (a.at(i) == '&') {
-				if (i + 1 < a.size() && a.at(i + 1) != '&') {
+	for (unsigned k = 0; k < tokens.size(); ++k) {
+		tokens.at(k) = trim(tokens.at(k));
+		for (size_t i = 0; i < tokens.at(k).size(); ++i) {
+			if (tokens.at(k).at(i) == '&') {
+				if (i + 1 < tokens.at(k).size() && tokens.at(k).at(i + 1) != '&') {
 					throw std::runtime_error("Tokenize2: Error, invalid syntax2");
 				}
 				++i;
 			}
-			if (a.at(i) == '|') {
-				if (i + 1 < a.size() && a.at(i + 1) != '|') {
+			if (tokens.at(k).at(i) == '|') {
+				if (i + 1 < tokens.at(k).size() && tokens.at(k).at(i + 1) != '|') {
 					throw std::runtime_error("Tokenize2: Error, invalid syntax3");
 				}
 				++i;
 			}
 		}
-		if (a.find('&') == 0 || a.find('|') == 0) {
+		if (tokens.at(k).find('&') == 0 || tokens.at(k).find('|') == 0) {
 			throw std::runtime_error("Tokenize2: Error, invalid syntax4");
 		}
 	}

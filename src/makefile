@@ -1,5 +1,5 @@
 CC=g++
-CC_FLAGS=-Wall -Werror -ansi -pedantic --std=c++11
+CC_FLAGS=-Wall -Werror -ansi -pedantic
 EXEC=rshell
 SOURCES=$(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
