@@ -5,6 +5,23 @@
 //  this->executable = "";
 //}
 
+Cmd::Cmd(const std::string& raw){
+  char* str = new char [raw.length() + 1]; 
+  std::strcpy(str,raw.c_str());
+  char* point;
+  
+  point = strtok(str, " ");
+  
+  this->executable = point;
+  point = strtok(NULL, " ");
+  
+  while(point != NULL){
+    std::string temp = point;
+    argumentList.push_back(temp);
+    point = strtok(NULL, " ");
+  }
+}
+
 Cmd::Cmd(const std::string& exec,const std::vector<std::string>& aList){
   this->executable = exec;
   for(unsigned i = 0; i < aList.size(); i++){
