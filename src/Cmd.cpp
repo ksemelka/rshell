@@ -33,7 +33,7 @@ Cmd::~Cmd() {
 }
 
 bool Cmd::execute() {
-  unsigned size = (argumentList.size() + 1);
+  unsigned size = (argumentList.size());
   char* args[100]; //
   
   args[0] = (char*)executable.c_str();
@@ -58,6 +58,5 @@ bool Cmd::execute() {
       return false;
     }
   }
-  
   return true;
 }
