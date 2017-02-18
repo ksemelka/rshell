@@ -21,8 +21,8 @@ bool Cmd::execute() {
   
   args[0] = (char*)executable.c_str();
   
-  for(unsigned i = 1; i < size+1; i++){
-    args[i] = (char*)(argumentList.at(i)).c_str();
+  for(unsigned i = 0; i < size; i++){
+    args[i+1] = (char*)(argumentList.at(i)).c_str();
   }
   
   args[size+1] = NULL;
