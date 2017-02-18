@@ -21,7 +21,12 @@ int main() {
 		Base* root;
 		std::string input;
 
-		std::cout << "$ ";
+		char host[100];
+     char login[100];
+     gethostname(host, 100);
+     getlogin_r(login, 100);
+     
+     std::cout << login << "@" << host<< "$ ";
 		std::getline(std::cin, input);
 		input = clearCommentedCode(input);
 		input = trim(input);
