@@ -2,6 +2,7 @@
 #include <cstring>	//std::strtok, std::strstr
 // #include <string>
 #include <vector>		//std::vector
+#include <list>
 #include <algorithm>	//std::find_first_not_of, std::find_first_of, std::find_last_not_of
 #include <stdexcept>
 #include "../header/Base.h"
@@ -15,6 +16,7 @@ void Tokenize2(const std::string&, std::vector<std::string>&);
 void Tokenize3(const std::string&, std::vector<std::string>&);
 const std::string trim(const std::string&);	//Strips leading and trailing whitespace
 Base* createTree(const std::vector<std::string>&);
+Base* _createTree(std::string);
 
 int main() {
 	while(1) {
@@ -130,16 +132,63 @@ void Tokenize2(const std::string& str,
 }
 
 Base* createTree(const std::vector<std::string>& tokens) {
-	Base* root = NULL;
-	for (const auto& s : tokens) {
-		size_t found = s.find_first_of("&|");
-		if (found == std::string::npos) {	// No connectors
-			root = new Cmd(s);
-			return root;
-		}
-		while (found != std::string::npos) {
-
-		}
+	std::list<std::string> tokensList(tokens.begin(), tokens.end());
+	
+	if (tokens.size() == 0) {
+		throw std::logic_error("createTree: Error, createTree must be passed at least one token.");
 	}
-	return root;
+	if (tokens.size() == 1) {
+		return _createTree(tokensList.front());
+	}
+	else {
+		Base* tempNode = NULL;
+		
+		while (!tokensList.empty()) {
+			if (tempNode) {	// leftNode already made from last iteration
+				Base* rightNode = _createTree(tokensList.front());
+				Base* newSemicolon = new Semicolon(tempNode, rightNode);
+				tempNode = newSemicolon;
+				tokensList.pop_front();
+			}
+			else {
+				Base* leftNode = _createTree(tokensList.front());
+				tokensList.pop_front();	// Get rid of tokens that we already processed
+				Base* rightNode = _createTree(tokensList.front());
+				Base* newSemicolon = new Semicolon(leftNode, rightNode);
+				tempNode = newSemicolon;
+			}
+		}
+		return tempNode;
+	}
+}
+
+Base* _createTree(std::string s) {
+	Base* tempNode = NULL;
+	s = trim(s);
+	size_t found = s.find_last_of("&|");
+		
+	if (found == std::string::npos) {	// No connectors
+		tempNode = new Cmd(s);
+		return tempNode;
+	}
+	
+	// Base* newNode = NULL;
+	// while (found != std::string::npos) {	// Create tree until no more connectors found
+	// 	unsigned beginIndex;
+	// 	nextConnectorPos = s.find_last_of("&|", found - 2);	// find pos of the next connector
+		
+	// 	if (nextConnectorPos == std::string::npos) {		// If there are no more connectors, set beginIndex to 0
+	// 		beginIndex = 0;
+	// 	}
+	// 	else {														// Else, set beginIndex to index right after next found connector;
+	// 		beginIndex = nextConnectorPos + 1;
+	// 	}
+		
+	// 	std::vector<std::string> tempVector = tokens;
+	// 	tempVector.pop_back();
+	// 	newNode = _createTree(s.substr());
+		
+	// 	found = nextConnectorPos;			// Update found for next iteration
+	// }
+	return tempNode;
 }
