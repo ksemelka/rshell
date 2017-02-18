@@ -20,5 +20,5 @@ bool Or::execute() {
   if(!((this->left)->execute())){
     return (this->right)->execute();
   }
-  return false;
+  return true;
 }
