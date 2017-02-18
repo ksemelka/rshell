@@ -1,0 +1,4 @@
+ls -z
+ls -3
+ls -5
+exit
