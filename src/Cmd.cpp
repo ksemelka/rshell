@@ -7,10 +7,6 @@
 
 Cmd::Cmd(const std::string& raw){
   std::string temp = raw;
-  unsigned find = temp.find("#");
-  if(find != std::string::npos){
-    temp.resize(find);
-  }
   
   char* str = new char [temp.length()]; 
   std::strcpy(str,temp.c_str());
