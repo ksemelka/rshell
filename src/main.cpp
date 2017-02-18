@@ -5,6 +5,9 @@
 #include <algorithm>	//std::find_first_not_of, std::find_first_of, std::find_last_not_of
 #include <stdexcept>
 #include "../header/Base.h"
+#include "../header/Cmd.h"
+#include "../header/Connector.h"
+#include "../header/Semicolon.h"
 
 Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&, const std::string&);
@@ -127,10 +130,10 @@ void Tokenize2(const std::string& str,
 }
 
 Base* createTree(const std::vector<std::string>& tokens) {
-	Base* root;
+	Base* root = NULL;
 	for (const auto& s : tokens) {
 		size_t found = s.find_first_of("&|");
-		if (found == string::npos) {	// No connectors
+		if (found == std::string::npos) {	// No connectors
 			root = new Cmd(s);
 			return root;
 		}
@@ -138,4 +141,5 @@ Base* createTree(const std::vector<std::string>& tokens) {
 
 		}
 	}
+	return root;
 }

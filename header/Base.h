@@ -4,6 +4,6 @@
 class Base {
 public:
 	Base() { } ;
-	~Base() { } ;
+	virtual ~Base() { } ;
 	virtual bool execute() = 0;
 };
