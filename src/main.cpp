@@ -4,13 +4,14 @@
 #include <vector>		//std::vector
 #include <algorithm>	//std::find_first_not_of, std::find_first_of, std::find_last_not_of
 #include <stdexcept>
-#include "header/Base.h"
+#include "../header/Base.h"
 
-void parse(const std::string&, std::vector<Base*>&);
+Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&, const std::string&);
 void Tokenize2(const std::string&, std::vector<std::string>&);
 void Tokenize3(const std::string&, std::vector<std::string>&);
-std::string trim(const std::string&);	//Strips leading and trailing whitespace
+const std::string trim(const std::string&);	//Strips leading and trailing whitespace
+Base* createTree(const std::vector<std::string>&);
 
 int main() {
 	while(1) {
@@ -23,40 +24,21 @@ int main() {
 
 		try{
 			root = parse(input);
+			root->execute();
 		} catch (std::exception& e) {
 			std::cout << e.what() << std::endl;
 		}
 	}
 }
 
-void parse(const std::string& str) {
+Base* parse(const std::string& str) {
 	Base* root;
 	std::vector<std::string> tokens;
-	std::string delimiters1 = ";";
-	std::string delimiters2 = "&&";
-	std::string delimiters3 = "||";
 
 	Tokenize2(str, tokens);
-	createTree(tokens);
+	root = createTree(tokens);
 
-
-	// Tokenize(str, tokens, delimiters1);
-	// for (auto& s : tokens) {
-	// 	s = trim(s);
-	// 	std::cout << s << std::endl;
-	// }
-	// Tokenize(str, tokens, delimiters2);
-	// for (auto& s : tokens) {
-	// 	s = trim(s);
-	// 	std::cout << s << std::endl;
-	// }
-	// Tokenize(str, tokens, delimiters3);
-	// for (auto& s : tokens) {
-	// 	s = trim(s);
-	// 	std::cout << s << std::endl;
-	// }
-
-	parsedTokens = v;
+	return root;
 }
 
 // void Tokenize(const std::string& str,
@@ -81,16 +63,24 @@ void parse(const std::string& str) {
 //     }
 // }
 
-std::string trim(const std::string& str) {
-    const std::string& whitespace = " \t\n";
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return ""; // no content
+const std::string trim(const std::string& str) {
+	std::string strcp = str;
+   // const std::string& whitespace = " \t\n";
+   // const auto strBegin = str.find_first_not_of(whitespace);
+   // if (strBegin == std::string::npos)
+   //      return ""; // no content
 
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
+   // const auto strEnd = str.find_last_not_of(whitespace);
+   // const auto strRange = strEnd - strBegin + 1;
 
-    return str.substr(strBegin, strRange);
+   // strcp = str.substr(strBegin, strRange);
+
+   size_t found = strcp.find("  ");
+   while (found != std::string::npos) { // Remove multiple whitespaces
+		strcp.replace(found, 2, " ");
+		found = strcp.find("  ");
+	}
+    return strcp;
 }
 
 void Tokenize2(const std::string& str,
@@ -117,9 +107,35 @@ void Tokenize2(const std::string& str,
 	}
 	for (auto& a : tokens) {
 		a = trim(a);
+		for (size_t i = 0; i < a.size(); ++i) {
+			if (a.at(i) == '&') {
+				if (i )
+				if (i + 1 < a.size() && a.at(i + 1) != '&') {
+					throw std::runtime_error("Tokenize2: Error, invalid syntax2");
+				}
+				// if (a.find_first_not_of("&"));
+			}
+		}
 		if (a.find('&') == 0 || a.find('|') == 0) {
 			throw std::runtime_error("Tokenize2: Error, invalid syntax2");
 		}
+		// if (a.find('&') != std::string::npos) {
+		// 	if (a.at(a.find('&')))
+		// }
 		std::cout << a << std::endl;
+	}
+}
+
+Base* createTree(const std::vector<std::string>& tokens) {
+	Base* root;
+	for (const auto& s : tokens) {
+		size_t found = s.find_first_of("&|");
+		if (found == string::npos) {	// No connectors
+			root = new Cmd(s);
+			return root;
+		}
+		while (found != std::string::npos) {
+
+		}
 	}
 }
