@@ -3,7 +3,7 @@ rshell: all
 	-mkdir bin/
 	for dir in $(SUBDIRS); do \
 		cd $$dir; \
-		mv rshell.exe ../bin; \
+		mv rshell ../bin; \
 		#cd -; \
 	done
 all: 
