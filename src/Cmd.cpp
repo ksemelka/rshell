@@ -6,7 +6,7 @@
 //}
 
 Cmd::Cmd(const std::string& raw){
-  char* str = new char [raw.length() + 1]; 
+  char* str = new char [raw.length()]; 
   std::strcpy(str,raw.c_str());
   char* point;
   
@@ -48,11 +48,13 @@ bool Cmd::execute() {
   
   if(pid == 0){	//Child node
     if(execvp(args[0],args) == -1){
+      perror("failed execution");
       return false;
     }
   }
   if(pid > 0){ //parent
     if( waitpid(-1,0,0) == -1){
+      perror("failed waitpid");
       return false;
     }
   }
