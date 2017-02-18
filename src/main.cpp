@@ -127,7 +127,7 @@ void Tokenize2(const std::string& str,
 		// if (a.find('&') != std::string::npos) {
 		// 	if (a.at(a.find('&')))
 		// }
-		std::cout << a << std::endl;
+		// std::cout << a << std::endl;
 	}
 }
 
@@ -154,6 +154,7 @@ Base* createTree(const std::vector<std::string>& tokens) {
 				Base* leftNode = _createTree(tokensList.front());
 				tokensList.pop_front();	// Get rid of tokens that we already processed
 				Base* rightNode = _createTree(tokensList.front());
+				tokensList.pop_front();
 				Base* newSemicolon = new Semicolon(leftNode, rightNode);
 				tempNode = newSemicolon;
 			}
@@ -174,8 +175,8 @@ Base* _createTree(std::string s) {
 	
 	// Base* newNode = NULL;
 	// while (found != std::string::npos) {	// Create tree until no more connectors found
-	// 	unsigned beginIndex;
-	// 	nextConnectorPos = s.find_last_of("&|", found - 2);	// find pos of the next connector
+	// 	size_t beginIndex;
+	// 	size_t nextConnectorPos = s.find_last_of("&|", found - 2);	// find pos of the next connector
 		
 	// 	if (nextConnectorPos == std::string::npos) {		// If there are no more connectors, set beginIndex to 0
 	// 		beginIndex = 0;
@@ -184,8 +185,12 @@ Base* _createTree(std::string s) {
 	// 		beginIndex = nextConnectorPos + 1;
 	// 	}
 		
-	// 	std::vector<std::string> tempVector = tokens;
-	// 	tempVector.pop_back();
+	// 	if (s.at(found) == '&') {
+	// 		newNode = And(left, right);
+	// 	}
+	// 	else if (s.at(found) == '|') {
+	// 		newNode = Or(left, right);
+	// 	}
 	// 	newNode = _createTree(s.substr());
 		
 	// 	found = nextConnectorPos;			// Update found for next iteration
