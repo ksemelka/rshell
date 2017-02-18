@@ -33,6 +33,10 @@ Cmd::~Cmd() {
 }
 
 bool Cmd::execute() {
+  if(this->executable == "exit"){
+    exit (0);
+  }
+  
   unsigned size = (argumentList.size());
   char* args[100]; //
   
