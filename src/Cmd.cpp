@@ -6,8 +6,14 @@
 //}
 
 Cmd::Cmd(const std::string& raw){
-  char* str = new char [raw.length()]; 
-  std::strcpy(str,raw.c_str());
+  std::string temp;
+  unsigned find = temp.find("#");
+  if(find != std::string::npos){
+    temp.resize(find);
+  }
+  
+  char* str = new char [temp.length()]; 
+  std::strcpy(str,temp.c_str());
   char* point;
   
   point = strtok(str, " ");
@@ -16,8 +22,8 @@ Cmd::Cmd(const std::string& raw){
   point = strtok(NULL, " ");
   
   while(point != NULL){
-    std::string temp = point;
-    argumentList.push_back(temp);
+    std::string temp2 = point;
+    argumentList.push_back(temp2);
     point = strtok(NULL, " ");
   }
 }
