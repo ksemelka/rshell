@@ -1,9 +1,6 @@
 #include "../header/Base.h"
 #include "../header/Cmd.h"
-
-//Cmd::Cmd(){
-//  this->executable = "";
-//}
+#include <cstdio>
 
 Cmd::Cmd(const std::string& raw){
   std::string temp = raw;
