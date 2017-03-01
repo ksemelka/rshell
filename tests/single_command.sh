@@ -26,3 +26,4 @@ echo "---------------------------------------------------"
 echo "---------------------------------------------------"
 echo "---------Test case 6: INVALID COMMAND--------------"
 cat ../tests/single_command_test/6.dat | ./rshell.exe > ../tests/single_command_test/6o.dat
+exit
