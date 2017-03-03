@@ -6,7 +6,5 @@ public:
 	Decorator();
 	Decorator(Base*);
 	~Decorator();
-	virtual bool evaluate() = 0;
-protected:
-    Base *node;
+	virtual bool execute() = 0;
 };
