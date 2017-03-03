@@ -17,4 +17,3 @@ echo "---------------------------------------------------"
 echo "---------Test case 4: COMBINED------------"
 cat ../tests/multi_command_test/4.dat | ./rshell.exe > ../tests/multi_command_test/4o.dat
 echo "---------------------------------------------------"
-exit

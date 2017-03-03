@@ -7,4 +7,6 @@ public:
 	Parentheses(Base*);
 	~Parentheses();
 	bool execute();
+protected:
+	Base* node;
 };

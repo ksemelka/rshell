@@ -2,6 +2,7 @@
 #include <cstring>
 #include <vector>		//std::vector
 #include <list>
+#include <queue>
 #include <algorithm>	//std::find_first_not_of, std::find_first_of, std::find_last_not_of
 #include <stdexcept>
 #include "../header/Cmd.h"
@@ -11,6 +12,7 @@
 
 Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&);
+std::vector<std::string> Tokenize(const std::string& str);
 const std::string trim(const std::string&);	//Strips leading and trailing whitespace
 Base* createTree(const std::vector<std::string>&);
 Base* _createTree(std::string);
@@ -58,16 +60,41 @@ Base* parse(const std::string& str) {
 
 const std::string trim(const std::string& str) {
 	std::string strcp = str;
-	
-   size_t found = strcp.find("  ");
+    std::queue<size_t> temp;
+    
+    size_t found = strcp.find("\"");
+    while (found != std::string::npos){
+        temp.push(found);
+        found = strcp.find("\"",found+1);
+        if(found != std::string::npos){
+            temp.push(found);
+            found = strcp.find("\"",found+1);
+        }
+    }
+    
+    int num_changed = 0;
+   found = strcp.find("  ");
    while (found != std::string::npos) { // Remove multiple whitespaces
-		strcp.replace(found, 2, " ");
-		found = strcp.find("  ");
+		if(temp.size() > 1){
+		    if(found > (temp.front() - num_changed)){
+                temp.pop();
+		        found = strcp.find("  ", temp.front() - num_changed);
+		        temp.pop();
+		    }else{
+		        strcp.replace(found, 2, " ");
+		        found = strcp.find("  ", found);
+		        num_changed++;
+		    }
+		}else{
+		    strcp.replace(found, 2, " ");
+		    found = strcp.find("  ", found);
+		    num_changed++;
+		}
 	}
     return strcp;
 }
 
-std::vector<std::string>& Tokenize(const std::string& str)
+std::vector<std::string> Tokenize(const std::string& str)
 {
 	std::vector<std::string> tokens;
 	size_t startPos = 0;
