@@ -25,21 +25,22 @@ bool Test::execute() {
     if(argument.size() > 2){
         std::cout << "(False)" << std::endl;
         return false;
-    }else if(argument.size() == 1){
-        if(stat( ((argument.at(0)).c_str()), &info ) != false){
+    }
+    
+    if(argument.size() == 1){
+        if(stat( ((argument.at(0)).c_str()), &info ) == 0){
             std::cout << "(True)" << std::endl;
             return true;
         }
-    }else if(argument.size() == 2){
-        if(stat( ((argument.at(1)).c_str()), &info ) != false){
-            if(argument.at(0) == "-f"){
-                
-            }else if(argument.at(0) == "-d"){
+    }
+    
+    if(argument.size() == 2){
+        if(stat((argument.at(1)).c_str(), &info ) == 0){
+            if(argument.at(0) == "-d"){
                 if(S_ISDIR(info.st_mode)){
                     std::cout << "(True)" << std::endl;
                     return true;
                 }
-                
                 std::cout << "(False)" << std::endl;
                 return false;
             }else if(argument.at(0) == "-f"){
@@ -55,7 +56,7 @@ bool Test::execute() {
             return true;
         }
     }
-    
+
   std::cout << "(False)" << std::endl;
   return false;
 }
