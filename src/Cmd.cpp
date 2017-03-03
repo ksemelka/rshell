@@ -1,5 +1,6 @@
 #include "../header/Base.h"
 #include "../header/Cmd.h"
+#include "../header/Test.h"
 #include <cstdio>
 
 Cmd::Cmd(const std::string& raw){
@@ -34,6 +35,11 @@ Cmd::~Cmd() {
 bool Cmd::execute() {
   if(this->executable == "exit"){
     exit (0);
+  }
+  
+  if(executable == "test"){
+    Base* test_command = new Test(argumentList);
+    return test_command->execute();
   }
   
   unsigned size = (argumentList.size());

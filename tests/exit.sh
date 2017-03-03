@@ -16,4 +16,3 @@ cat ../tests/exit_test/3.dat | ./rshell.exe > ../tests/exit_test/3o.dat
 echo "---------------------------------------------------"
 echo "---------Test case 4: EXIT END------------------"
 cat ../tests/exit_test/4.dat | ./rshell.exe > ../tests/exit_test/4o.dat
-exit
