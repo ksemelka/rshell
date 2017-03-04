@@ -1,0 +1,9 @@
+[ -e ../hw2 ] && echo exists
+[ -d ../tests ] && echo exists
+[ -f ../LICENSE ] && echo exists
+[ ../hw2 ] && echo exists
+[ -e ../h2 ] || echo ne
+[ -d ../tsts ] || echo ne
+[ -f ../LCENSE ] || echo ne
+[ ../h2 ] || echo ne
+exit

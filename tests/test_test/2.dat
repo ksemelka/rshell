@@ -1,0 +1,5 @@
+[ -e ../hw2 ]
+[ -d ../tests ]
+[test -f ../hw2 ]
+[ test ../hw2 ]
+exit

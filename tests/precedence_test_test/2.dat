@@ -1,0 +1,5 @@
+(ls -a && ls) || ls
+(ls -Z ; ls) || git
+(test -e ../hw2) && echo hello
+((test -e ../hw2) && echo hello) ; ls
+exit

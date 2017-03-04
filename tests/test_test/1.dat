@@ -1,0 +1,5 @@
+test -e ../hw2
+test -d ../tests
+test -f ../LICENSE
+test ../hw2
+exit

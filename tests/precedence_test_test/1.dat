@@ -1,0 +1,7 @@
+( test -e ../hw2 )
+(echo hello)
+(ls)
+(test -d ../tests)
+(test -f ../LICENSE)
+(test ../hw2)
+exit
