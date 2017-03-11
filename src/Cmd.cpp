@@ -6,14 +6,27 @@
 Cmd::Cmd(const std::string& raw){
   std::string temp = raw;
   
+  while (temp.at(0) == ' ') {   // Remove leading and trailing whitespace
+    temp = temp.substr(1, temp.size() - 1);
+  }
+  while (temp.at(temp.size() - 1) == ' ') {
+    temp = temp.substr(0, temp.size() - 2);
+  }
+  if (temp.at(0) == '[') {
+    this->executable = "test";
+    temp = temp.substr(1, temp.size() - 2);
+  }
+  
   char* str = new char [temp.length()]; 
   std::strcpy(str,temp.c_str());
   char* point;
   
   point = strtok(str, " ");
   
-  this->executable = point;
-  point = strtok(NULL, " ");
+  if (this->executable != "test") {
+    this->executable = point;
+    point = strtok(NULL, " ");
+  }
   
   while(point != NULL){
     std::string temp2 = point;

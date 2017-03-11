@@ -9,6 +9,7 @@
 #include "../header/Semicolon.h"
 #include "../header/And.h"
 #include "../header/Or.h"
+#include "../header/Parentheses.h"
 
 Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&);
@@ -17,6 +18,8 @@ const std::string trim(const std::string&);	//Strips leading and trailing whites
 Base* createTree(const std::vector<std::string>&);
 Base* _createTree(std::string);
 std::string clearCommentedCode(const std::string&);
+Base* _createTree2(const std::string&, const int&); 
+std::string trimParens(const std::string);
 
 int main() {
 	while(1) {
@@ -153,8 +156,7 @@ Base* createTree(const std::vector<std::string>& tokens) {
 	while (!tokensList.empty()) {
 		if (tempNode) {	// leftNode already made from last iteration
 			Base* rightNode = _createTree(tokensList.front());
-			Base* newSemicolon = new Semicolon(tempNode, rightNode);
-			tempNode = newSemicolon;
+			tempNode = new Semicolon(tempNode, rightNode);
 			tokensList.pop_front();
 		}
 		else {
@@ -162,40 +164,49 @@ Base* createTree(const std::vector<std::string>& tokens) {
 			tokensList.pop_front();	// Get rid of tokens that we already processed
 			Base* rightNode = _createTree(tokensList.front());
 			tokensList.pop_front();
-			Base* newSemicolon = new Semicolon(leftNode, rightNode);
-			tempNode = newSemicolon;
+			tempNode = new Semicolon(leftNode, rightNode);
 		}
 	}
 	return tempNode;
 }
 
-Base* _createTree(std::string s) {
-	Base* newNode = NULL;
-
-	size_t found = s.find_last_of("])");
-	if (found != std::string::npos) {	// 
-		
-	}
+// Base* _createTree(std::string s) {
+// 	Base* newNode = NULL;
+// 	Base* insertNode = NULL;
 	
-   found = s.find_last_of("&|");
+//    size_t found = s.find_last_of("&|");
 		
-	if (found == std::string::npos) {	// No connectors
-		newNode = new Cmd(s);
-		return newNode;
-	}
+// 	if (found == std::string::npos) {	// Base case: No connectors
+// 		newNode = new Cmd(s);
+// 		return newNode;
+// 	}
 
-	if (s.at(found) == '&') {
-	   newNode = new And(_createTree(s.substr(0, found - 2)), new Cmd(s.substr(found + 1, s.size() - 1)));
-	}
-	else if (s.at(found) == '|') {
-		newNode = new Or(_createTree(s.substr(0, found - 2)), new Cmd(s.substr(found + 1, s.size() - 1)));
-	}
-	else {
-		throw std::logic_error("_createTree: Error, found character other than connector");
-	}
+// 	if (s.at(found) == '&') {
+// 	   newNode = new And(_createTree(s.substr(0, found - 2)), _createTree(s.substr(found + 1, s.size() - 1)));
+// 	}
+// 	else if (s.at(found) == '|') {
+// 		newNode = new Or(_createTree(s.substr(0, found - 2)), _createTree(s.substr(found + 1, s.size() - 1)));
+// 	}
+// 	else {
+// 		throw std::logic_error("_createTree: Error, found character other than connector");
+// 	}
 	
-	return newNode;
-}
+	
+	
+// 	while (found != std::string::npos) {
+// 	   size_t nextFound = s.substr(found + 2, s.size() - 1).find_first_of("&|");
+// 	   if (nextFound != std::string::npos) {
+//    	   left = _createTree(s.substr(0, found - 1));
+//    	   right = _createTree(s.substr(found + 2, nextFound))
+// 	   }
+// 	   else {
+// 	      left = 
+// 	   }
+// 	   found = s.substr(found + 2, s.size() - 1).find_first_of("&|");
+// 	}
+	
+// 	return newNode;
+// }
 
 std::string clearCommentedCode(const std::string& input) {
    std::string output = input;
@@ -208,4 +219,57 @@ std::string clearCommentedCode(const std::string& input) {
       }
    }
    return output;
+}
+
+std::string trimParens(const std::string s) {
+   std::string strCpy = s;
+   while (strCpy.at(strCpy.find_first_not_of(" ")) == '(' && strCpy.at(strCpy.find_last_not_of(" ")) == ')' ) {
+      strCpy = strCpy.substr(strCpy.find("(") + 1, strCpy.find_last_of(")") - 1);
+   }
+   return strCpy;
+}
+
+Base* _createTree(std::string s) {
+   s = trimParens(s);
+   
+   if (s.find_first_of("&|") == std::string::npos) {  // Base Case: no connectors
+      return new Cmd(s);
+   }
+   
+   int found = -1;
+
+   int numParens = 0;
+   for (size_t i = 0; i < s.size(); i++) {
+      if (s.at(i) == '(') {
+         numParens++;
+      }
+      if (s.at(i) == ')') {
+         numParens--;
+      }
+   
+      if (numParens == 0) {
+         if (s.at(i) == '&' || s.at(i) == '|') {
+            found = i;
+            i++;
+         }
+      }
+   }
+   return _createTree2(s, found);
+}
+
+Base* _createTree2(const std::string& s, const int& found) {
+   std::string strRight;
+   
+   if (found == -1) {
+      throw std::logic_error("from _createTree2: Error, did not find connector.");
+   }
+   
+   strRight = s.substr(found + 2, s.size() - 1);
+   
+   if (s.at(found) == '|') {
+      return new Or(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   }
+   else {
+      return new And(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   }
 }
