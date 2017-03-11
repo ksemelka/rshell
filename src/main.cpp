@@ -223,7 +223,28 @@ std::string clearCommentedCode(const std::string& input) {
 
 std::string trimParens(const std::string s) {
    std::string strCpy = s;
+   
+   while (strCpy.at(0) == ' ') {    // Remove leading and trailing whitespace
+      strCpy = strCpy.substr(1, strCpy.size() - 1);
+   }
+   while (strCpy.at(strCpy.size() - 1) == ' ') {
+      strCpy = strCpy.substr(0, strCpy.size() - 2);
+   }
+   
    while (strCpy.at(strCpy.find_first_not_of(" ")) == '(' && strCpy.at(strCpy.find_last_not_of(" ")) == ')' ) {
+      int numParens = 0;
+      for (unsigned i = 0; i < strCpy.size(); i++) {
+         if (strCpy.at(i) == '(') {
+            numParens++;
+         }
+         if (strCpy.at(i) == ')') {
+            numParens--;
+         }
+         if (numParens == 0 && i < strCpy.size() - 1) {
+            std::cout << "if\n";
+            return strCpy;
+         }
+      }
       strCpy = strCpy.substr(strCpy.find("(") + 1, strCpy.find_last_of(")") - 1);
    }
    return strCpy;
