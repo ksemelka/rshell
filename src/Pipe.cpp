@@ -18,7 +18,7 @@ Pipe::Pipe(Base* left, Base* right) {
 
 
 bool Pipe::execute() {
-  pid_t pid;
+  // pid_t pid;
   int ret;
   int pipefd[2];
   int savestdin = dup(0);
@@ -32,17 +32,17 @@ bool Pipe::execute() {
     return false;
   }
   
-  pid = fork();
+  // pid = fork();
   bool success = false;
-  if (pid == 0) {
+  // if (pid == 0) {
     //CHILD
     close(1);
     dup2(pipefd[1], STDOUT_FILENO);
     left->execute();
     close(pipefd[1]);
     dup2(savestdout, STDOUT_FILENO);
-  }
-  else {
+  // }
+  // else {
     close(0);
     dup2(pipefd[0],STDIN_FILENO); //1 for output redirect, 0 for input redirect
     close(pipefd[0]);
@@ -52,10 +52,10 @@ bool Pipe::execute() {
     }
     
     dup2(savestdin, STDIN_FILENO);
-  }
+  // }
   
-  dup2(savestdin, 0);
-  dup2(savestdout, 1);
+  // dup2(savestdin, 0);
+  // dup2(savestdout, 1);
   
   return success;
 }

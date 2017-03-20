@@ -296,7 +296,7 @@ Base* _createTree2(const std::string& s, const int& found) {
    			//std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
    			return new Or(_createTree(s.substr(0, found - 1)), _createTree(strRight));
    		}
-   		strRight = s.substr(found + 1, s.size());
+   		strRight = s.substr(found + 1, s.size() - 1);
    		//std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
     	return new Pipe(_createTree(s.substr(0, found - 1)), _createTree(strRight));
    }
@@ -305,7 +305,7 @@ Base* _createTree2(const std::string& s, const int& found) {
       //std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
       return new And(_createTree(s.substr(0, found - 1)), _createTree(strRight));
    }else if(s.at(found) == '<'){
-   	  strRight = s.substr(found + 1, s.size());
+   	  strRight = s.substr(found + 1, s.size() - 1);
    	  //std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
    	  return new InputRedirect(_createTree(s.substr(0, found - 1)), _createTree(strRight));
    }else if(s.at(found) == '>'){
