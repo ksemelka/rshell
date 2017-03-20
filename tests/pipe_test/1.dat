@@ -1,0 +1,2 @@
+cat ../tests/dump_files/in.dat | tr a-z A-Z
+exit

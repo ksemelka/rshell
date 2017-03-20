@@ -1,0 +1,2 @@
+cat < ../tests/dump_files/in.dat | tr A-Z a-z | tee ../tests/dump_files/newOutputFile1 | tr a-z A-Z > ../tests/dump_files/newOutputFile2
+exit

@@ -1,0 +1,2 @@
+ls -a >> ../tests/dump_files/dumpfile_output2.temp
+exit

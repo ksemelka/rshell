@@ -1,0 +1,2 @@
+ls > ../tests/dump_files/dumpfile_output.temp
+exit

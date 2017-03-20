@@ -1,0 +1,2 @@
+cat < nonexist.dat
+exit
