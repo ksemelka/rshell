@@ -245,7 +245,6 @@ std::string trimParens(const std::string s) {
             numParens--;
          }
          if (numParens == 0 && i < strCpy.size() - 1) {
-            std::cout << "if\n";
             return strCpy;
          }
       }
