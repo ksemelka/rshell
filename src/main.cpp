@@ -130,12 +130,12 @@ std::vector<std::string> Tokenize(const std::string& str)
 				}
 				++i;
 			}
-			if (a.at(i) == '|') {
-				if (i + 1 < a.size() && a.at(i + 1) != '|') {
-					throw std::runtime_error("from Tokenize: Error, invalid syntax3");
-				}
-				++i;
-			}
+			// if (a.at(i) == '|') {
+			// 	if (i + 1 < a.size() && a.at(i + 1) != '|') {
+			// 		throw std::runtime_error("from Tokenize: Error, invalid syntax3");
+			// 	}
+			// 	++i;
+			// }
 		}
 		if (a.find('&') == 0 || a.find('|') == 0) {  // Connectors should never be the first character
 			throw std::runtime_error("from Tokenize: Error, invalid syntax4");
