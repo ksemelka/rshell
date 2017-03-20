@@ -82,3 +82,8 @@ bool Cmd::execute() {
   }
   return true;
 }
+
+
+std::string Cmd::getExecutable(){
+  return executable;
+}

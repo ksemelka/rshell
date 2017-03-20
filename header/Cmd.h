@@ -15,6 +15,7 @@ public:
 	Cmd(const std::string& , const std::vector<std::string>&);
 	~Cmd();
 	bool execute();
+	std::string getExecutable();
 private:
 	std::string executable;
 	std::vector< std::string > argumentList;

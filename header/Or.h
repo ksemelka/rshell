@@ -7,4 +7,5 @@ public:
 	Or(Base*, Base*);
 	~Or();
 	bool execute();
+	std::string getExecutable(){return "";};
 };

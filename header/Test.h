@@ -10,6 +10,7 @@ public:
 	Test(const std::vector<std::string >&);
 	~Test();
 	bool execute();
+	std::string getExecutable(){return "";};
 protected:
 	std::vector< std::string > argument;
 };

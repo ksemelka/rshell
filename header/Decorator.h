@@ -7,4 +7,5 @@ public:
 	Decorator(Base*);
 	~Decorator();
 	virtual bool execute() = 0;
+	virtual std::string getExecutable() = 0;
 };

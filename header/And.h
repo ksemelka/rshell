@@ -7,4 +7,5 @@ public:
 	And(Base*, Base*);
 	~And();
 	bool execute();
+	std::string getExecutable(){return "";};
 };

@@ -7,6 +7,7 @@ public:
 	Parentheses(Base*);
 	~Parentheses();
 	bool execute();
+	std::string getExecutable(){return "";};
 protected:
 	Base* node;
 };

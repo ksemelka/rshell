@@ -7,4 +7,5 @@ public:
 	Semicolon(Base*, Base*);
 	~Semicolon();
 	bool execute();
+	std::string getExecutable(){return "";};
 };
