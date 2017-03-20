@@ -54,8 +54,8 @@ bool Pipe::execute() {
     dup2(savestdin, STDIN_FILENO);
   // }
   
-  // dup2(savestdin, 0);
-  // dup2(savestdout, 1);
+  close(savestdin);
+  close(savestdout);
   
   return success;
 }
