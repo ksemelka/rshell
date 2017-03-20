@@ -10,6 +10,10 @@
 #include "../header/And.h"
 #include "../header/Or.h"
 #include "../header/Parentheses.h"
+#include "../header/Pipe.h"
+#include "../header/OutputRedirect.h"
+#include "../header/OutputRedirectAppend.h"
+#include "../header/InputRedirect.h"
 
 Base* parse(const std::string&);
 void Tokenize(const std::string&, std::vector<std::string>&);
@@ -253,7 +257,7 @@ std::string trimParens(const std::string s) {
 Base* _createTree(std::string s) {
    s = trimParens(s);
    
-   if (s.find_first_of("&|") == std::string::npos) {  // Base Case: no connectors
+   if (s.find_first_of("&|<>") == std::string::npos) {  // Base Case: no connectors KUSH: added other connectors
       return new Cmd(s);
    }
    
@@ -269,7 +273,7 @@ Base* _createTree(std::string s) {
       }
    
       if (numParens == 0) {
-         if (s.at(i) == '&' || s.at(i) == '|') {
+         if (s.at(i) == '&' || s.at(i) == '|' || s.at(i) == '<' || s.at(i) == '>') { //KUSH EDIT: changed in order to consider the cases
             found = i;
             i++;
          }
@@ -285,12 +289,35 @@ Base* _createTree2(const std::string& s, const int& found) {
       throw std::logic_error("from _createTree2: Error, did not find connector.");
    }
    
-   strRight = s.substr(found + 2, s.size() - 1);
+   //strRight = s.substr(found + 2, s.size() - 1); //KUSH: removed in order to consider cases where it is only 1 character
    
    if (s.at(found) == '|') {
-      return new Or(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   		if(s.at(found + 1) == '|'){
+   			strRight = s.substr(found + 2, s.size() - 1);
+   			//std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
+   			return new Or(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   		}
+   		strRight = s.substr(found + 1, s.size());
+   		//std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
+    	return new Pipe(_createTree(s.substr(0, found - 1)), _createTree(strRight));
    }
-   else {
+   else if(s.at(found) == '&'){
+   	  strRight = s.substr(found + 2, s.size() - 1);
+      //std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
       return new And(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   }else if(s.at(found) == '<'){
+   	  strRight = s.substr(found + 1, s.size());
+   	  //std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
+   	  return new InputRedirect(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   }else if(s.at(found) == '>'){
+     if(s.at(found + 1) == '>'){
+   			strRight = s.substr(found + 2, s.size() - 1);
+   			//std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
+   			return new OutputRedirectAppend(_createTree(s.substr(0, found - 1)), _createTree(strRight));
+   		}
    }
+   //cout << "reach "
+   strRight = s.substr(found + 1, s.size());
+   //std::cout <<"s{" << s << "} strRight:{" << strRight << "}" << std::endl;
+   return new OutputRedirect(_createTree(s.substr(0, found - 1)), _createTree(strRight));
 }
